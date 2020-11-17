@@ -5,7 +5,7 @@
 * [Introduction](#introduction)
 * [Tools](#tools)
 * [Implementation](#implementation)
-* [Acknowledgement](#cknowledgement)
+* [Acknowledgement](#acknowledgement)
 
 
 ## Introduction
