@@ -1,6 +1,6 @@
 # RS485-Testing-with-STM32
 
-#Content
+# Contents
 
 * [Introduction](#introduction)
 * [Tools](#tools)
@@ -22,10 +22,54 @@ STM32 is a family of 32-bit microcontroller integrated circuits by STMicroelectr
 Atollic® TrueSTUDIO® for STM32 is a flexible and extensible development and debugging IDE for STM32 MCU developers who want extremely powerful tools to aid in development of high-quality embedded software. TrueSTUDIO® is based on open standards (ECLIPSE and GNU) and extended with professional features for code management and advanced system analysis. This gives a unique insight into the structure and the dynamic behavior of the system.
 
 ### [RS485 Modules](https://www.digikey.com/catalog/en/partgroup/rs-485-transceivers/10428)
-
+![schematic](schematic.jpg)
 
 
 ## Implementation
+
+This is custom implementation of RS485 communication on my opinion. If you take advantage of this development , i recomend to go through the RS485 communication fundamentals, C++ programmimg fundamentals strongly & about STM32 MCUs properly. This implementation is highly depends on them. 
+
+### Architecture
+
+![architecture](architecture.PNG)
+
+### Custom DataFrame Format
+![dataframe](dataframe.PNG)
+
+* SYNC - The synchronisation Byte
+* M toS - Master to Slave
+* S to M - Slave to Master
+* ADDR - Slave address
+* D1...D4 - Data fields
+* STATUS - Valid reading or Invalid reading 
+* CRC - Cyclic Redundancy Check (Polynomial will be designers choice)
+* EMPTY - Not assigned a value yet, it can be designers choice, default value is 0.
+
+### State Diagrame of Master
+![master](master_state.PNG)
+
+### State Diagrame of Slaves
+![slave](slave_state.PNG)
+
+### Flow
+
+* master sends a request data frame to all of the slaves.
+* Slaves identify the data frame and and send the appropriate data to the Master.
+* All the slaves and Master, filter the received data according to their different fields of the data frame. 
+* We can introduce RS 485 as extended UART, the main advantage is, it is a bus network and the data can be transmitted over long distances with high immunity to noise.
+* In this architecture, there should be one sender at a time, all others should be receivers. 
+* If not, the bus will not function correctly.
+* Use suitable UART peripheral you want & update it on rs485_XXXXX_configure.h file
+
+
+
+
+
+### Warning
+
+```diff
+- Above state diagrams are not exactly the same with the codes, because there are some modifications  with developing the code. Analize C codes carefully and understand the state diagram modifications, what initially did. (Above state diagrams are what should exactly do, they are the simplest ones)
+```
 
 
 
